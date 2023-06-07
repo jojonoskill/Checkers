@@ -5,16 +5,41 @@
 
 #include "Point.h"
 #include "GameLogic.h"
-#include "ManageGame.h"
-
 #include "DrawGame.h"
+#include "ManageGame.h"
+#include <chrono>
+
+
 
 using namespace std;
 using namespace std::chrono;
 
 GameLogic::Checker*** checkers = game->GetField();
+
+
+ManageGame manageGame;
+
+
+void MoveMouse(int x, int y) {
+    manageGame.MoveMouse(x, y);
+}
+void Mouse(int key, int state, int x, int y) {
+    manageGame.Mouse(key, state, x, y);
+}
+void mouseWheel(int button, int dir, int x, int y) {
+    manageGame.mouseWheel(button, dir, x, y);
+}
+void Key(int key, int x, int y) {
+    manageGame.Key(key, x, y);
+}
+void Keyboard(unsigned char key, int x, int y) {
+    manageGame.Keyboard(key, x, y);
+}
+
+
+
 // Створення об'єкту класу GameLogic 
-GameLogic* game = new GameLogic();
+
 // Розмір вікна (стартовий та поточний)
 int width = 800;
 int height = 600;
@@ -236,9 +261,9 @@ void Timer(int r) {
 
 // Головна функція
 int main(int argc, char** argv) {
-    
+
     srand(time(NULL));
-    InitGame();  
+    manageGame.InitGame();
     glutInit(&argc, argv);
     glutInitWindowPosition(-1, -1);
     glutInitWindowSize(width, height);
@@ -254,7 +279,7 @@ int main(int argc, char** argv) {
     glutMouseFunc(Mouse);
     glutPassiveMotionFunc(MoveMouse);
     glutMotionFunc(MoveMouse);
-    
+
     glutTimerFunc(16, Timer, 0);
 
     glEnable(GL_DEPTH_TEST);

@@ -14,7 +14,7 @@ const int Posit1 = 32;
 const int Posit2 = 8;
 
 //// Створення об'єкту класу GameLogic 
-//GameLogic* game = new GameLogic();
+GameLogic* game = new GameLogic();
 
 // Відображення столу
 void DrawBoard() {  
@@ -170,7 +170,7 @@ void DrawBoard() {
 
 // Відображення шашок
 void DrawCheckers() {
-    /*GameLogic::Checker*** checkers = game->GetField();*/
+    GameLogic::Checker*** checkers = game->GetField();
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     for (int i = 0; i < NumberOfCells; i++)

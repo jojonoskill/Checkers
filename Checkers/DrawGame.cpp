@@ -1,6 +1,10 @@
 #include "DrawGame.h"
 
 
+GameLogic* game = new GameLogic();
+int indicatorX = 0;
+int indicatorY = 0;
+
 
 void DrawGame::DrawBoard() {
     // Нижня частина дошки

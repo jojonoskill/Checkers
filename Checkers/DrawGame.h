@@ -1,5 +1,5 @@
-#ifndef DrawGame_h
-#define DrawGame_h
+//#ifndef DrawGame_h
+//#define DrawGame_h
 
 #include <vector>
 #include <GL/glut.h>
@@ -7,14 +7,14 @@
 #include "GameLogic.h"
 
 
-int indicatorX = 0;
-int indicatorY = 0;
+extern int indicatorX;
+extern int indicatorY;
 
 const int NumberOfCells = 8;
 const int Posit1 = 32;
 const int Posit2 = 8;
 
-GameLogic* game = new GameLogic();
+extern GameLogic* game;
 
 class DrawGame {
 public:
@@ -24,4 +24,4 @@ public:
 
 };
 
-#endif
+//#endif

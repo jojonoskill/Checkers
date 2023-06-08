@@ -8,6 +8,8 @@ using namespace std;
 const int numberOfCells = 8;
 #define	null	0
 
+
+
 class GameLogic {
 public:
 	// Оголошує перелік значень для результатів вибору.

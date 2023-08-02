@@ -5,29 +5,14 @@
 
 #define	null	0
 
-//// Оголошення константних змінних для результатів вибору та розміщення шашки.
-//GameLogic::SelectResult EmptyCell = GameLogic::SelectResult::EmptyCell;
-//GameLogic::SelectResult IncorrectPlayer = GameLogic::SelectResult::IncorrectPlayer;
-//GameLogic::SelectResult KillingIsImportant = GameLogic::SelectResult::KillingIsImportant;
-//GameLogic::SelectResult NoSteps = GameLogic::SelectResult::NoSteps;
-//GameLogic::SelectResult Success = GameLogic::SelectResult::Success;
-//
-//GameLogic::PutResult SuccessWithKill = GameLogic::PutResult::SuccessWithKill;
-//GameLogic::PutResult PickedEmpty = GameLogic::PutResult::PickedEmpty;
-//GameLogic::PutResult IncorrectPlace = GameLogic::PutResult::IncorrectPlace;
-//GameLogic::PutResult Canceled = GameLogic::PutResult::Canceled;
-//
-//// Оголошення константних змінних для представлення гравців.
-//GameLogic::Player White = GameLogic::Player::White;
-//GameLogic::Player Black = GameLogic::Player::Black;
 
-// Конструктор класу Checker. Встановлює гравця та тип шашки.
+//Checker class constructor 
 GameLogic::Checker::Checker(Player player, Type type) {
 	this->player = player;
 	this->type = type;
 }
 
-// Конструктор класу GameLogic. Ініціалізує гру з початковими значеннями.
+// Gamelogic constructor
 GameLogic::GameLogic() {
 
 	this->currPlayer = Player::White;
@@ -43,7 +28,7 @@ GameLogic::GameLogic() {
 	}
 }
 
-// Скидає стан гри до початкового значення.
+//Reset the game
 void GameLogic::Reset() {
 	currPlayer = Player::White;
 	Cancel();
@@ -61,17 +46,14 @@ void GameLogic::Reset() {
 	}
 }
 
-// Перевіряє, чи виходить задана позиція за межі ігрового поля.
 bool GameLogic::OutOfRange(int x, int y) {
 	return x < 0 || x > numberOfCells - 1 || y < 0 || y > numberOfCells - 1;
 }
 
-//  Перевіряє, чи задана позиція відповідає обраній шашці.
 bool GameLogic::IsChose(int x, int y) {
 	return x == chose_x && y == chose_y;
 }
 
-// Перевіряє, чи має шашка можливі ходи.
 bool GameLogic::HaveSteps(int x, int y) {
 	Checker* picked = GetChecker(x, y);
 	if (picked == null)
@@ -95,7 +77,6 @@ bool GameLogic::HaveSteps(int x, int y) {
 	return false;
 }
 
-// Перевіряє, чи може шашка виконати бій.
 bool GameLogic::CanKill(int x, int y) {
 	Checker* picked = GetChecker(x, y);
 	if (picked == null)
@@ -118,8 +99,6 @@ bool GameLogic::CanKill(int x, int y) {
 		}
 	}
 	if (picked->type == Checker::Type::King) {
-		/*
-		*/
 		int x_ = x + 1;
 		int y_ = y + 1;
 		while (!OutOfRange(x_, y_)) {
@@ -131,8 +110,6 @@ bool GameLogic::CanKill(int x, int y) {
 			Checker* ch = GetChecker(x_, y_);
 			return ch->player != currPlayer && GetChecker(x_ + 1, y_ + 1) == null && !OutOfRange(x_ + 1, y_ + 1);
 		}
-		/*
-		*/
 		x_ = x - 1;
 		y_ = y + 1;
 		while (!OutOfRange(x_, y_)) {
@@ -144,8 +121,6 @@ bool GameLogic::CanKill(int x, int y) {
 			Checker* ch = GetChecker(x_, y_);
 			return ch->player != currPlayer && GetChecker(x_ - 1, y_ + 1) == null && !OutOfRange(x_ - 1, y_ + 1);
 		}
-		/*
-		*/
 		x_ = x + 1;
 		y_ = y - 1;
 		while (!OutOfRange(x_, y_)) {
@@ -157,8 +132,6 @@ bool GameLogic::CanKill(int x, int y) {
 			Checker* ch = GetChecker(x_, y_);
 			return ch->player != currPlayer && GetChecker(x_ + 1, y_ - 1) == null && !OutOfRange(x_ + 1, y_ - 1);
 		}
-		/*
-		*/
 		x_ = x - 1;
 		y_ = y - 1;
 		while (!OutOfRange(x_, y_)) {
@@ -174,7 +147,6 @@ bool GameLogic::CanKill(int x, int y) {
 	return false;
 }
 
-// Перевіряє, чи може шашка здійснити бій з однієї позиції на іншу.
 bool GameLogic::KillOnWay(int from_x, int from_y, int to_x, int to_y) {
 	if (!CanKill(from_x, from_y))
 		return false;
@@ -216,7 +188,6 @@ bool GameLogic::KillOnWay(int from_x, int from_y, int to_x, int to_y) {
 	return false;
 }
 
-//  Перевіряє, чи може шашка здійснити хід з однієї позиції на іншу.
 bool GameLogic::CanMoveFromTo(int from_x, int from_y, int to_x, int to_y) {
 	Checker* picked = GetChecker(from_x, from_y);
 	if (picked == null)
@@ -247,7 +218,6 @@ bool GameLogic::CanMoveFromTo(int from_x, int from_y, int to_x, int to_y) {
 	return false;
 }
 
-// Обробляє дію вибору шашки гравцем.
  GameLogic::SelectResult GameLogic::Option(int x, int y) {
 	Checker* picked = GetChecker(x, y);
 	if (picked == null)
@@ -269,13 +239,13 @@ bool GameLogic::CanMoveFromTo(int from_x, int from_y, int to_x, int to_y) {
 	chose_y = y;
 	return SelectResult::Success;
 }
-// Скасовує вибір шашки гравцем.
+
 void GameLogic::Cancel() {
 	chose_x = -1;
 	chose_y = -1;
 }
 
-//Розміщує шашку на вказану позицію.
+
 GameLogic::PutResult GameLogic::Put(int x, int y) {
 	if (x == chose_x && y == chose_y && canCancel) {
 		Cancel();
@@ -346,35 +316,29 @@ GameLogic::PutResult GameLogic::Put(int x, int y) {
 	return PutResult::IncorrectPlace;
 }
 
-// Перевіряє, чи була обрана яка-небудь шашка.
 bool GameLogic::IsChose() {
 	return chose_x >= 0 && chose_y >= 0;
 }
 
-//  Встановлює шашку checker на клітинку (x, y) ігрового поля.
 void GameLogic::SetChecker(int x, int y, Checker* checker) {
 	if (!OutOfRange(x, y))
 		gameField[y][x] = checker;
 }
 
-// Повертає шашку на клітинці (x, y).
 GameLogic::Checker* GameLogic::GetChecker(int x, int y) {
 	if (x >= 0 && x <= numberOfCells - 1 && y >= 0 && y <= numberOfCells - 1)
 		return GameLogic::GameLogic::gameField[y][x];
 	return null;
 }
 
-// Повертає вказівник на двовимірний масив з шашками, який представляє ігрове поле.
 GameLogic::Checker*** GameLogic::GetField() {
 	return GameLogic::gameField;
 }
 
-// Повертає поточного гравця (currPlayer).
 GameLogic::Player GameLogic::GetCurrPlayer() {
 	return GameLogic::currPlayer;
 }
 
-// Повертає кількість шашок білого гравця.
 int GameLogic::GetWh() {
 	int count = 0;
 	for (int i = 0; i < numberOfCells; i++)
@@ -387,7 +351,6 @@ int GameLogic::GetWh() {
 	return count;
 }
 
-// Повертає кількість шашок чорного гравця.
 int GameLogic::GetBl() {
 	int count = 0;
 	for (int i = 0; i < numberOfCells; i++)
@@ -400,8 +363,6 @@ int GameLogic::GetBl() {
 	return count;
 }
 
-//  Перевіряє, чи завершилась гра (всі шашки одного гравця знищені,
-// або одна з команд більше не може робити ходи).
 bool GameLogic::IsEnd() {
 	int b = 0;
 	int w = 0;
@@ -421,7 +382,6 @@ bool GameLogic::IsEnd() {
 		b == 0 || w == 0;
 }
 	
-// Повертає гравця, який переміг в грі (якщо є переможець).
 GameLogic::Player GameLogic::GetWin() {
 	int b = 0;
 	int w = 0;
@@ -442,7 +402,6 @@ GameLogic::Player GameLogic::GetWin() {
 	return GameLogic::Player::White;
 }
 
-//  Перетворює ігрове поле в рядок і повертає його представлення у вигляді тексту.
 string GameLogic::ToString() {
 	string result = "X0123456789X\n";
 	for (int i = 0; i < numberOfCells; i++) {

@@ -18,33 +18,30 @@ GameLogic::Checker*** checkers = game->GetField();
 
 DrawGame drawGame;
 
-// Поворот камери та відстань (зум)
 Point view;
 
 bool records = false;
 bool saved = false;
 
-// Час (хвилини та секунди)
+
 int time_m;
 int time_s;
 
 string message = "";
 
-// Час початку раунду
 milliseconds startTime;
 
-// Відступ миші (за час між попереднім та поточним кадром)
 int mouseOffsetX = 0;
 int mouseOffsetY = 0;
 
-// Координати миші у попередньому кадрі
+
 int mouseLastX = -1;
 int mouseLastY = -1;
 
-// Чи натиснута ліва кнопка миші
+
 bool isMouseDown = false;
 
-// Функція ініцілізації даних
+
 
 
 
@@ -65,7 +62,7 @@ void InitGame() {
     game->Reset();
 }
 
-// Обробник руху миші
+
 void MoveMouse(int x, int y) {
     if (mouseLastX == -1)
         mouseLastX = x;
@@ -85,7 +82,6 @@ void MoveMouse(int x, int y) {
     glutPostRedisplay();
 }
 
-// Обробник клавіш миші
 void Mouse(int key, int state, int x, int y) {
     if (key == 2) {
         isMouseDown = (state == 1) ? false : true;
@@ -99,7 +95,6 @@ void Mouse(int key, int state, int x, int y) {
     MoveMouse(x, y);
 }
 
-// Обробник коліщатка миші
 void mouseWheel(int button, int dir, int x, int y) {
     if (dir > 0) {
         view.z -= 0.1;
@@ -110,7 +105,6 @@ void mouseWheel(int button, int dir, int x, int y) {
     glutPostRedisplay();
 }
 
-// Обработчик нажатия клавиш
 void Key(int key, int x, int y) {
     switch (key) {
     case GLUT_KEY_LEFT:
@@ -171,7 +165,6 @@ void Key(int key, int x, int y) {
     glutPostRedisplay();
 }
 
-// Функція обробник клавіатури
 void Keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case ' ':
@@ -225,13 +218,10 @@ void Keyboard(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
-// Створення об'єкту класу GameLogic 
 
-// Розмір вікна (стартовий та поточний)
 int width = 800;
 int height = 600;
 
-//Обробник зміни розміру вікна
 void WinSize(int w, int h) {
     if (w < 800)
         w = 800;
@@ -254,7 +244,6 @@ void WinSize(int w, int h) {
     
 }
 
-// Функція відображення тексту
 void DisplayText(string text, Point color, Point position) {
     
     glColor3f(color.x, color.y, color.z);
@@ -267,7 +256,6 @@ void DisplayText(string text, Point color, Point position) {
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]);
 }
 
-// Структура даних гри
 struct DataGame {
     GameLogic::Player player;
     int blacks;
@@ -276,7 +264,6 @@ struct DataGame {
     int time_s;
 };
 
-// Функція показу аркуша рекордів
 void DisplayResultList() {
     string text = "Result list\n";
     ifstream fin("result.txt");
@@ -342,7 +329,7 @@ void DisplayResultList() {
     DisplayText(text, Point(164.0 / 255.0, 79.0 / 255.0, 255.0 / 255.0), Point(20, 200));
 }
 
-// Додати рекорд у файл
+
 void PushResultList(GameLogic::Player winner, int blacks, int whites, int time_m, int time_s) {
     ifstream c;
     ofstream fout;
@@ -353,13 +340,11 @@ void PushResultList(GameLogic::Player winner, int blacks, int whites, int time_m
     fout << (winner == GameLogic::Player::White ? 1 : 0) << " " << blacks << " " << whites << " " << time_m << " " << time_s;
 }
 
-// Відображення об'єктів
 void Display() {
     glClearColor(105 / 255.0, 105 / 255.0, 105 / 255.0, 1.0);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Відображення 3д об'єктів
     glEnable(GL_DEPTH_TEST);
 
     glMatrixMode(GL_MODELVIEW);
@@ -371,7 +356,6 @@ void Display() {
     glRotatef(view.x, 1, 0, 0);
     glRotatef(view.y, 0, 0, 1);
 
-    // Відображення гри 
     drawGame.DrawBoard();
     drawGame.DrawCheckers();
     drawGame.DrawIndicator();
@@ -380,7 +364,6 @@ void Display() {
     glDisable(GL_LIGHTING);
     glPopMatrix();
 
-    // Відображення тексту
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -430,12 +413,10 @@ void Display() {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
 
-    // Відображення графіки
     glFlush();
     glutSwapBuffers();
 }
 
-// Функція відліку часу
 void Timer(int r) {
     if (!game->IsEnd()) {
         milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
@@ -446,7 +427,6 @@ void Timer(int r) {
     glutTimerFunc(16, Timer, 0);
 }
 
-// Головна функція
 int main(int argc, char** argv) {
 
     srand(time(NULL));

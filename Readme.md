@@ -16,4 +16,12 @@
 4. **Enjoy!**
 
 
+## Some screenshots
+
+
+![image](https://github.com/jojonoskill/Checkers/assets/87534952/f4991cfe-2e07-42c7-95cb-b331f303285f)
+
+![image](https://github.com/jojonoskill/Checkers/assets/87534952/2e20c8f8-15f4-417c-be37-20d86489d563)
+
+![image](https://github.com/jojonoskill/Checkers/assets/87534952/1b987616-3bf5-46be-9ede-cc459845fdca)
 
